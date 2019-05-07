@@ -1,0 +1,142 @@
+{
+  "name": "Hydrogen-Studio",
+  "main": "./src/main",
+  "version": "0.0.0",
+  "description": "A short description of your package",
+  "keywords": [],
+  "repository": "https://github.com/aviatesk/atom-hydrogen-studio",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "atomTranspilers": [
+    {
+      "transpiler": "atom-ts-transpiler",
+      "glob": "{!(node_modules)/**/,}*.ts?(x)",
+      "options": {
+        "compilerOptions": {},
+        "cacheKeyFiles": [],
+        "verbose": false
+      }
+    }
+  ],
+  "configSchema": {
+    "openPlotPaneOnExecution": {
+      "default": "true",
+      "description": "If true, Hydrogen-Studio will try to opens a plot pane on every execution",
+      "order": 3,
+      "title": "Open plot pane on execution",
+      "type": "boolean"
+    },
+    "plotPaneDefaultLocation": {
+      "default": "center",
+      "description": "Specifies the default pane container where a new plot pane will be opened",
+      "enum": [
+        "left",
+        "center",
+        "right",
+        "bottom"
+      ],
+      "order": 1,
+      "title": "Default location of new plot pane",
+      "type": "string"
+    },
+    "plotPaneSplit": {
+      "default": "no split",
+      "description": "Specifies how a new plot pane is split",
+      "enum": [
+        "no split",
+        "left",
+        "up",
+        "right",
+        "down"
+      ],
+      "order": 2,
+      "title": "New plot pane split",
+      "type": "string"
+    }
+  },
+  "package-deps": [
+    "Hydrogen"
+  ],
+  "consumedServices": {
+    "hydrogen.provider": {
+      "versions": {
+        "^1.2.0": "consumeHydrogen"
+      }
+    }
+  },
+  "activationCommands": {
+    "atom-text-editor": [
+      "hydrogen:start-local-kernel",
+      "hydrogen:connect-to-remote-kernel",
+      "hydrogen:run",
+      "hydrogen:run-and-move-down",
+      "hydrogen:run-all",
+      "hydrogen:run-all-above",
+      "hydrogen:run-cell",
+      "hydrogen:run-cell-and-move-down",
+      "hydrogen:restart-kernel-and-re-evaluate-bubbles",
+      "hydrogen:toggle-bubble"
+    ],
+    "atom-workspace": [
+      "hydrogen:import-notebook"
+    ]
+  },
+  "deserializers": {
+    "HydrogenStudioPlotPaneView": "deserializeHydrogenStudioPlotPaneView"
+  },
+  "dependencies": {
+    "@nteract/commutable": "^7.1.0",
+    "@nteract/display-area": "^5.0.4-alpha.0",
+    "@nteract/transform-plotly": "^5.0.0",
+    "@nteract/transform-vega": "^5.0.2",
+    "@nteract/transforms": "^5.0.4-alpha.0",
+    "atom-ts-transpiler": "^1.5.2",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-rangeslider": "^2.2.0",
+    "rxjs": "^6.5.1",
+    "typescript": "^3.4.5"
+  },
+  "devDependencies": {
+    "@types/atom": "^1.36.1",
+    "@types/react": "^16.8.17",
+    "@types/react-dom": "^16.8.4",
+    "@types/react-rangeslider": "^2.2.0",
+    "husky": "^2.2.0",
+    "lint-staged": "^8.1.6",
+    "prettier": "^1.17.0",
+    "tslint": "^5.16.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "tslint-react": "^4.0.0"
+  },
+  "scripts": {
+    "tsc": "tsc --project . --noEmit",
+    "tslint": "tslint --fix --force --format stylish --project ./tsconfig.json ./{src,spec}/**/*.{ts,tsx}",
+    "prettier": "prettier --write ./{src,spec}/**/*.{ts,tsx}",
+    "check": "npm run tslint && npm run prettier && npm run tsc",
+    "check:lint-staged": "npm run tslint && npm run prettier && npm run tsc && echo Ignored patched files: ",
+    "check:config": "tslint-config-prettier-check ./tslint.json"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": false,
+    "printWidth": 120,
+    "trailingComma": "es5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run check:lint-staged"
+    ]
+  }
+}

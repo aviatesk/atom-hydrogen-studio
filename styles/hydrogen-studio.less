@@ -1,0 +1,76 @@
+// The ui-variables file is provided by base themes provided by Atom.
+//
+// See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
+// for a full listing of what's available.
+@import "ui-variables";
+
+.hydrogen-studio {
+
+  /*** -------------- Global  ------------------ ***/
+
+  img {
+    background-color: white;
+  }
+  svg:first-child {
+    background-color: white;
+  }
+  img, svg {
+    display: block;
+  }
+  .js-plotly-plot {
+    svg {
+      background-color: unset;
+    }
+  }
+
+  /*** -------------- Plot Pane View ------------------ ***/
+
+  .plot-pane {
+    padding: @component-padding;
+
+    .plot-info {
+      height: @component-icon-size + @component-icon-padding * 2;
+      position: relative;
+    }
+  }
+
+  /*** -------------- Slider ------------------ ***/
+
+  .slider {
+    @btn-size: @component-icon-size + @component-icon-padding;
+    @pad: @component-padding;
+    display: flex;
+    padding: @pad @btn-size * 3;
+    height: @btn-size +  @pad * 2;
+    position: relative;
+    .rangeslider {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      border: 1px solid @button-background-color;
+      .rangeslider__handle {
+        cursor: pointer;
+        display: relative;
+        position: relative;
+        width: @btn-size;
+        height: @btn-size;
+        border-radius: @component-border-radius;
+        border: 1px solid @button-border-color;
+        margin-left: -(@btn-size / 2);
+        left: @btn-size / 2;
+        background: @button-background-color;
+        &:hover {
+          background: @button-background-color-hover;
+        }
+        &:focus {
+          border-color: @button-background-color-selected;
+        }
+      }
+
+      .rangeslider__labels {
+        display: none;
+      }
+    }
+  }
+
+}
