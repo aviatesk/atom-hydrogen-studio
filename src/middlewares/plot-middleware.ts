@@ -4,7 +4,7 @@ import { plotPaneController } from "../controllers/plot-pane-controller";
 import { HydrogenStudioPlotData, plotStore } from "../stores/plot-store";
 import {
   Channel,
-  ExecuteResultMessage,
+  ExecuteMessage,
   HydrogenKernel,
   HydrogenKernelMiddleware,
   HydrogenKernelMiddlewareThunk,
@@ -49,7 +49,7 @@ export default class HydrogenStudioPlotKernelMiddleware implements HydrogenKerne
   }
 
   public execute(next: HydrogenKernelMiddlewareThunk, code: string, onResults: HydrogenResultsCallback) {
-    next.execute(code, (message: ExecuteResultMessage, channel: Channel) => {
+    next.execute(code, (message: ExecuteMessage, channel: Channel) => {
       const { msg_type } = message.header;
       const { data } = message.content;
       let sentToPlotPane = false;
@@ -72,7 +72,7 @@ export default class HydrogenStudioPlotKernelMiddleware implements HydrogenKerne
               },
             ];
 
-            // Append the plot data to the plot view's plot data store
+            // Append the plot data to plot data store
             const plotData: HydrogenStudioPlotData = {
               displayName: this.kernel.displayName.slice(0), // Should be immutable
               executionCount: this.currentExecutionCount,
@@ -87,7 +87,7 @@ export default class HydrogenStudioPlotKernelMiddleware implements HydrogenKerne
             } else {
               // Open plot pane
               if (this.openPlotPaneOnExecution) {
-                plotPaneController.openPlotPaneView();
+                plotPaneController.openView();
                 sentToPlotPane = true;
               }
             }

@@ -1,3 +1,4 @@
+import { inspectorPaneController } from "./controllers/inspector-pane-controller";
 import { plotPaneController } from "./controllers/plot-pane-controller";
 import { hydrogenStudio } from "./hydrogen-studio";
 import { Hydrogen } from "./typings/hydrogen";
@@ -15,9 +16,16 @@ export function consumeHydrogen(hydrogen: Hydrogen) {
 }
 
 export function serialize() {
-  plotPaneController.serialize();
+  return {
+    plotPaneView: plotPaneController.serialize(),
+    inspectorPaneView: inspectorPaneController.serialize(),
+  };
 }
 
 export function deserializeHydrogenStudioPlotPaneView(_deserialized: {}) {
   return plotPaneController.deserialize();
+}
+
+export function deserializeHydrogenStudioInspectorView(_deserialized: {}) {
+  return inspectorPaneController.deserialize();
 }

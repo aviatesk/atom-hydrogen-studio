@@ -1,18 +1,21 @@
 import * as Atom from "atom";
+import { inspectorPaneController } from "./controllers/inspector-pane-controller";
 import { plotPaneController } from "./controllers/plot-pane-controller";
+import HydrogenStudioInspectorKernelMiddleware from "./middlewares/inspector-middleware";
 import HydrogenStudioPlotKernelMiddleware from "./middlewares/plot-middleware";
+import { inspectorStore } from "./stores/inspector-store";
 import { Hydrogen, HydrogenKernel } from "./typings/hydrogen";
 
 class HydrogenStudio {
   private subscriptions: Atom.CompositeDisposable;
   private hydrogen: null | Hydrogen;
-  private kernelSet: WeakSet<HydrogenKernel>;
+  private kernelSet: Set<HydrogenKernel>;
   private plotMiddlewareSet: Set<HydrogenStudioPlotKernelMiddleware>;
 
   constructor() {
     this.subscriptions = new Atom.CompositeDisposable();
     this.hydrogen = null;
-    this.kernelSet = new WeakSet();
+    this.kernelSet = new Set();
     this.plotMiddlewareSet = new Set();
   }
 
@@ -21,7 +24,10 @@ class HydrogenStudio {
     this.subscriptions.add(
       atom.commands.add("atom-workspace", {
         "hydrogen-studio:open-plot-pane": () => {
-          plotPaneController.openPlotPaneView();
+          plotPaneController.openView();
+        },
+        "hydrogen-studio:open-inspector-pane": () => {
+          inspectorPaneController.openView();
         },
       })
     );
@@ -38,7 +44,12 @@ class HydrogenStudio {
     // Add Disposer
     this.subscriptions.add(
       new Atom.Disposable(() => {
-        plotPaneController.destory();
+        plotPaneController.destroy();
+      })
+    );
+    this.subscriptions.add(
+      new Atom.Disposable(() => {
+        inspectorPaneController.destroy();
       })
     );
   }
@@ -52,7 +63,9 @@ class HydrogenStudio {
       }
 
       const plotMiddleware = new HydrogenStudioPlotKernelMiddleware(kernel);
+      const inspectorMiddleware = new HydrogenStudioInspectorKernelMiddleware(kernel);
       kernel.addMiddleware(plotMiddleware);
+      kernel.addMiddleware(inspectorMiddleware);
 
       this.kernelSet.add(kernel);
       this.plotMiddlewareSet.add(plotMiddleware);
@@ -60,6 +73,7 @@ class HydrogenStudio {
       kernel.onDidDestroy(() => {
         this.kernelSet.delete(kernel);
         this.plotMiddlewareSet.delete(plotMiddleware);
+        inspectorStore.deleteKernel(kernel);
       });
     });
 
@@ -76,4 +90,6 @@ class HydrogenStudio {
 export const hydrogenStudio = new HydrogenStudio();
 
 // For debugging
-(window as any).hydrogenStudio = hydrogenStudio;
+if (atom.inDevMode() || atom.inSpecMode()) {
+  (window as any).hydrogenStudio = hydrogenStudio;
+}

@@ -11,6 +11,7 @@
     "lib": ["dom"],
     "jsx": "react",
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "downlevelIteration": true
   }
 }

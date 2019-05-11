@@ -1,6 +1,6 @@
 # Atom Hydrogen-Studio
 
-This is a plugin for Atom package [Hydrogen](https://github.com/nteract/hydrogen) that makes it look more like [R-Studio](https://www.rstudio.com/products/RStudio/#Desktop)
+This is a plugin for Atom package [Hydrogen](https://github.com/nteract/hydrogen) that makes it look more like [R-Studio](https://www.rstudio.com/products/RStudio/#Desktop).
 
 Note the package is currently under development and not even published for now.
 
@@ -10,8 +10,9 @@ Note the package is currently under development and not even published for now.
 
 ## Features
 
-- [x] Plot pane
-- [ ] Inspector pane
+- [x] Plot view
+- [x] Inspector view
+    * [ ] Inspection input view
 
 ## Ideas
 

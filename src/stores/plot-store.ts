@@ -11,7 +11,7 @@ export interface HydrogenStudioPlotData {
 }
 
 /**
- * Stores plots data and the index of an active plot
+ * Stores plots data and an active plot
  *
  * @note: The exported method that would be used in TSX files should be written in allow function syntax,
  *        becuase this automatically binds the method to this class object globally.
@@ -34,6 +34,12 @@ export class HydrogenStudioPlotStore {
     return this.plotsData[this.activePlot];
   }
 
+  @action
+  public appendPlotData(plotData: HydrogenStudioPlotData) {
+    this.plotsData.push(plotData);
+    this.activePlot = this.plotsData.length - 1;
+  }
+
   public hasPlot = () => {
     return this.plotsData.length !== 0;
   };
@@ -44,12 +50,6 @@ export class HydrogenStudioPlotStore {
 
   public hasPreviousPlot = () => {
     return this.activePlot > 0;
-  };
-
-  @action
-  public appendPlotData = (plotData: HydrogenStudioPlotData) => {
-    this.plotsData.push(plotData);
-    this.activePlot = this.plotsData.length - 1;
   };
 
   @action
@@ -107,4 +107,6 @@ export class HydrogenStudioPlotStore {
 export const plotStore = new HydrogenStudioPlotStore();
 
 // For debuggings
-(window as any).hydrogenPlotStore = plotStore;
+if (atom.inDevMode() || atom.inSpecMode()) {
+  (window as any).hydrogenStudioPlotStore = plotStore;
+}

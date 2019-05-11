@@ -1,4 +1,29 @@
 {
-  "context-menu": {},
-  "menu": []
+  "context-menu": {
+    "atom-workspace": [{
+      "label": "Hydrogen Studio",
+      "submenu": [{
+        "label": "Open Plot Pane",
+        "command": "hydrogen-studio:open-plot-pane"
+      }, {
+        "label": "Open Inspector Pane",
+        "command": "hydrogen-studio:open-inspector-pane"
+      }]
+    }]
+  },
+  "menu": [{
+    "label": "Packages",
+    "submenu": [{
+      "label": "Hydrogen Studio",
+      "submenu": [{
+          "label": "Open Plot Pane",
+          "command": "hydrogen-studio:open-plot-pane"
+        },
+        {
+          "label": "Open Inspector Pane",
+          "command": "hydrogen-studio:open-inspector-pane"
+        }
+      ]
+    }]
+  }]
 }

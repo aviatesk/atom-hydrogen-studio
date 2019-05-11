@@ -8,6 +8,8 @@
 
   /*** -------------- Global  ------------------ ***/
 
+  overflow-y: auto;
+
   img {
     background-color: white;
   }
@@ -20,17 +22,6 @@
   .js-plotly-plot {
     svg {
       background-color: unset;
-    }
-  }
-
-  /*** -------------- Plot Pane View ------------------ ***/
-
-  .plot-pane {
-    padding: @component-padding;
-
-    .plot-info {
-      height: @component-icon-size + @component-icon-padding * 2;
-      position: relative;
     }
   }
 
@@ -70,6 +61,51 @@
       .rangeslider__labels {
         display: none;
       }
+    }
+  }
+
+  /*** -------------- React-Select ------------------ ***/
+
+  .react-select-container {
+    padding-bottom: @component-padding;
+    width: 200px;
+    .react-select__control, .react-select__single-value, svg {
+      color: @text-color;
+      background-color: @input-background-color;
+    }
+    .react-select__menu {
+      background-color: @input-background-color;
+      .react-select__option.react-select__option--is-selected {
+        background-color: @input-background-color;
+      }
+      .react-select__option.react-select__option--is-focused {
+        background-color: @background-color-selected;
+      }
+    }
+  }
+
+  /*** -------------- Plot Pane View ------------------ ***/
+
+  .plot-pane {
+    padding: @component-padding;
+
+    .plot-info {
+      height: @component-icon-size + @component-icon-padding * 2;
+      position: relative;
+    }
+  }
+
+  /*** -------------- Inspector Pane View ------------------ ***/
+
+  .inspector-pane {
+    font-size: @font-size;
+    code {
+      font-size: @font-size;
+    }
+    padding: @component-padding;
+
+    span[style] {
+      color: @text-color-info !important;
     }
   }
 

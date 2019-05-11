@@ -1,18 +1,16 @@
 import * as Atom from "atom";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import { HydrogenStudioView } from "../common";
+import { HydrogenStudioPaneView } from "../common";
 import HydrogenStudioPlotPaneComponent from "../components/plot-pane-component";
 import { plotPaneController } from "../controllers/plot-pane-controller";
 import { plotStore } from "../stores/plot-store";
 
-export class HydrogenStudioPlotPaneView extends HydrogenStudioView {
+export class HydrogenStudioPlotPaneView extends HydrogenStudioPaneView {
   public static readonly URI = "atom://hydrogen-studio/plot-pane-view";
 
   constructor() {
     super();
-
-    this.element.classList.add("hydrogen-studio");
 
     // Add view opener
     this.subscriptions.add(
@@ -55,7 +53,7 @@ export class HydrogenStudioPlotPaneView extends HydrogenStudioView {
 
     this.subscriptions.add(
       new Atom.Disposable(() => {
-        plotPaneController.disposePlotPaneView();
+        plotPaneController.disposeView();
       })
     );
 

@@ -4,14 +4,92 @@ import { registerTransform, standardDisplayOrder, standardTransforms } from "@nt
 import * as Atom from "atom";
 import * as ReactDOM from "react-dom";
 
+/**
+ * Checks whether a pane container where a item with a given URI lives is `Atom.Dock` or `Atom.WorkspaceCenter`.
+ * Returns `false` if there is no pane container for a item with a given URI.
+ */
+function isInDock(uri: string): boolean {
+  const paneContainer = atom.workspace.paneContainerForURI(uri);
+  if (paneContainer) {
+    return (paneContainer as any).getLocation() !== "center";
+  }
+  return false;
+}
+
+/**
+ * General view controller class
+ */
+export abstract class HydrogenStudioPaneController {
+  protected view: null | HydrogenStudioPaneView;
+
+  constructor() {
+    this.view = null;
+  }
+
+  public openView() {
+    if (!this.view) {
+      // When a previous view has been destroyed
+      this.view = this.createView();
+      atom.workspace.open(this.getURI(), {
+        activatePane: false,
+        split: atom.config.get("Hydrogen-Studio.newPaneSplit"),
+      });
+    } else {
+      // When a plot pane already exists
+      atom.workspace.open(this.getURI(), {
+        activatePane: false,
+        searchAllPanes: true,
+      });
+    }
+
+    // When this.view lives in a dock, it's should be opened in addition to `atom.workspace.open`
+    if (isInDock(this.getURI())) {
+      const paneContainer = atom.workspace.paneContainerForURI(this.getURI());
+      (paneContainer as any).show(); // `panePane` should be Atom.Dock
+    }
+  }
+
+  public disposeView() {
+    this.view = null;
+  }
+
+  public destroy() {
+    if (this.view) {
+      this.view.destroy();
+    }
+  }
+
+  public serialize() {
+    if (this.view) {
+      return this.view.serialize();
+    }
+    return;
+  }
+
+  public deserialize() {
+    this.view = this.createView();
+    return this.view;
+  }
+
+  /**
+   * Returns an new object of the view, which would be controlled by this controller
+   */
+  protected abstract createView(): HydrogenStudioPaneView;
+
+  /**
+   * Returns an URI string, which is unique to the view, which would be controlled by this controller
+   */
+  protected abstract getURI(): string;
+}
+
 interface Serialized {
   deserializer: string;
 }
 
 /**
- * General view class which implements basic default methods needed by Atom
+ * General view class
  */
-export abstract class HydrogenStudioView {
+export abstract class HydrogenStudioPaneView {
   public static readonly URI: string;
 
   protected element: HTMLElement;
@@ -19,6 +97,8 @@ export abstract class HydrogenStudioView {
 
   constructor() {
     this.element = document.createElement("div");
+    this.element.classList.add("hydrogen-studio");
+
     this.subscriptions = new Atom.CompositeDisposable();
 
     // Add disposer
@@ -56,18 +136,6 @@ export abstract class HydrogenStudioView {
   public destroy(): void {
     this.subscriptions.dispose();
   }
-}
-
-/**
- * Checks whether a pane container where a item with a given URI lives is `Atom.Dock` or `Atom.WorkspaceCenter`.
- * Returns `false` if there is no pane container for a item with a given URI.
- */
-export function isInDock(uri: string): boolean {
-  const paneContainer = atom.workspace.paneContainerForURI(uri);
-  if (paneContainer) {
-    return (paneContainer as any).getLocation() !== "center";
-  }
-  return false;
 }
 
 // We can easily add other transforms here:

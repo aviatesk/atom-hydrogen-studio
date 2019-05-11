@@ -7,7 +7,7 @@ import { displayOrder, transforms } from "../common";
 import { HydrogenStudioPlotStore } from "../stores/plot-store";
 
 /**
- * Component class that is suppposed to be used when there is no plot.
+ * Component class that is suppposed to be used when there is no plot
  */
 class EmptyMessage extends React.Component {
   public render() {

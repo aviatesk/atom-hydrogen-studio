@@ -1,1 +1,6 @@
-{}
+{
+  "atom-workspace": {
+    "alt-q p": "hydrogen-studio:open-plot-pane",
+    "alt-q i": "hydrogen-studio:open-inspector-pane"
+  }
+}

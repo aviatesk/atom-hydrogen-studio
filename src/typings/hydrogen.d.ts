@@ -13,6 +13,7 @@ declare type MessageType =
   | "input_reply"
   | "input_request"
   | "inspect_request"
+  | "inspect_reply"
   | "is_complete_request"
   | "kernel_info_request"
   | "shutdown_request"
@@ -33,38 +34,46 @@ declare interface JupyterMessage<MessageType, Content> {
   parent_header: JupyterMessageHeader<any> | {};
   metadata: object;
   content: Content;
-  buffers?: any[] | null;
+  buffers?: any[];
 }
 
-declare interface ExecuteMessageContent {
-  code: string;
-  silent: boolean;
-  store_history: boolean;
-  user_expressions: object;
-  allow_stdin: boolean;
-  stop_on_error: boolean;
-}
+// declare type ExecuteMessageContent = {
+//   code: string;
+//   silent: boolean;
+//   store_history: boolean;
+//   user_expressions: object;
+//   allow_stdin: boolean;
+//   stop_on_error: boolean;
+// };
 
-declare type ExecuteRequest = JupyterMessage<"execute_request", ExecuteMessageContent>;
-
-declare interface ExecuteResultContent {
+declare type ExecuteMessageContent = {
+  code?: string;
   data?: { [key: string]: object };
   execution_count: number;
-}
+};
 
-declare type ExecuteResultMessage = JupyterMessage<MessageType, ExecuteResultContent>;
+declare type ExecuteMessage = JupyterMessage<MessageType, ExecuteMessageContent>;
 
 declare type OutputType = "display_data" | "execute_result";
 
-declare interface Output extends ExecuteResultContent {
+declare interface Output extends ExecuteMessageContent {
   output_type: OutputType;
 }
 
 declare type Outputs = Output[];
 
-export type Channel = "shell" | "iopub" | "stdin";
+declare type Bundle = { [key: string]: string };
 
-export type HydrogenResultsCallback = (message: any, channel: Channel) => void;
+declare type InspectorReplyContent = {
+  data?: Bundle;
+  found: boolean;
+};
+
+declare type InspectorReplyMessage = JupyterMessage<"inspect_reply", InspectorReplyContent>;
+
+declare type Channel = "shell" | "iopub" | "stdin";
+
+declare type HydrogenResultsCallback = (message: any, channel: Channel) => void;
 
 /**
  * Like HydrogenKernelMiddleware, but doesn't require passing a `next` argument.
@@ -72,7 +81,7 @@ export type HydrogenResultsCallback = (message: any, channel: Channel) => void;
  * the next middleware in the chain (or to the kernel, if there is no more
  * middleware to call)
  */
-export interface HydrogenKernelMiddlewareThunk {
+declare interface HydrogenKernelMiddlewareThunk {
   readonly interrupt: () => void;
   readonly shutdown: () => void;
   readonly restart: (onRestarted: (...args: any[]) => any | null) => void;
@@ -81,7 +90,7 @@ export interface HydrogenKernelMiddlewareThunk {
   readonly inspect: (code: string, cursorPos: number, onResults: HydrogenResultsCallback) => void;
 }
 
-export interface HydrogenKernelMiddleware {
+declare interface HydrogenKernelMiddleware {
   readonly interrupt?: (next: HydrogenKernelMiddlewareThunk) => void;
   readonly shutdown?: (next: HydrogenKernelMiddlewareThunk) => void;
   readonly restart?: (next: HydrogenKernelMiddlewareThunk, onRestarted: (...args: any[]) => any | null) => void;
@@ -106,7 +115,7 @@ export interface HydrogenKernelMiddleware {
  *
  * @version 1.0.0
  */
-export interface Hydrogen {
+declare interface Hydrogen {
   /**
    * Calls your callback when the kernel has changed.
    */
@@ -129,7 +138,7 @@ export interface Hydrogen {
  * The `HydrogenKernel` class wraps Hydrogen's internal representation of kernels
  * and exposes a small set of methods that should be usable by plugins.
  */
-export interface HydrogenKernel {
+declare interface HydrogenKernel {
   /**
    * The language of the kernel, as specified in its kernelspec
    */

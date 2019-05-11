@@ -2,8 +2,15 @@
   "name": "Hydrogen-Studio",
   "main": "./src/main",
   "version": "0.0.0",
-  "description": "A short description of your package",
-  "keywords": [],
+  "description": "Makes your Hydrogen looks even better !",
+  "keywords": [
+    "Hydrogen",
+    "Jupyter",
+    "IPython",
+    "IJulia",
+    "Plot",
+    "Inspector"
+  ],
   "repository": "https://github.com/aviatesk/atom-hydrogen-studio",
   "license": "MIT",
   "engines": {
@@ -21,12 +28,19 @@
     }
   ],
   "configSchema": {
-    "openPlotPaneOnExecution": {
-      "default": "true",
-      "description": "If true, Hydrogen-Studio will try to opens a plot pane on every execution",
-      "order": 3,
-      "title": "Open plot pane on execution",
-      "type": "boolean"
+    "newPaneSplit": {
+      "default": "no split",
+      "description": "Specifies how a new plot pane is split",
+      "enum": [
+        "no split",
+        "left",
+        "up",
+        "right",
+        "down"
+      ],
+      "order": 1,
+      "title": "New plot pane split",
+      "type": "string"
     },
     "plotPaneDefaultLocation": {
       "default": "center",
@@ -37,22 +51,28 @@
         "right",
         "bottom"
       ],
-      "order": 1,
+      "order": 2,
       "title": "Default location of new plot pane",
       "type": "string"
     },
-    "plotPaneSplit": {
-      "default": "no split",
-      "description": "Specifies how a new plot pane is split",
+    "openPlotPaneOnExecution": {
+      "default": "true",
+      "description": "If true, Hydrogen-Studio will try to opens a plot pane on every execution",
+      "order": 3,
+      "title": "Open plot pane on execution",
+      "type": "boolean"
+    },
+    "inspectorPaneDefaultLocation": {
+      "default": "center",
+      "description": "Specifies the default pane container where a new inspector pane will be opened",
       "enum": [
-        "no split",
         "left",
-        "up",
+        "center",
         "right",
-        "down"
+        "bottom"
       ],
-      "order": 2,
-      "title": "New plot pane split",
+      "order": 4,
+      "title": "Default location of new inspector pane",
       "type": "string"
     }
   },
@@ -84,11 +104,13 @@
     ]
   },
   "deserializers": {
-    "HydrogenStudioPlotPaneView": "deserializeHydrogenStudioPlotPaneView"
+    "HydrogenStudioPlotPaneView": "deserializeHydrogenStudioPlotPaneView",
+    "HydrogenStudioInspectorView": "deserializeHydrogenStudioInspectorView"
   },
   "dependencies": {
     "@nteract/commutable": "^7.1.0",
     "@nteract/display-area": "^5.0.4-alpha.0",
+    "@nteract/mathjax": "^4.0.0",
     "@nteract/transform-plotly": "^5.0.0",
     "@nteract/transform-vega": "^5.0.2",
     "@nteract/transforms": "^5.0.4-alpha.0",
@@ -98,6 +120,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-rangeslider": "^2.2.0",
+    "react-select": "^2.4.3",
     "rxjs": "^6.5.1",
     "typescript": "^3.4.5"
   },
@@ -106,6 +129,7 @@
     "@types/react": "^16.8.17",
     "@types/react-dom": "^16.8.4",
     "@types/react-rangeslider": "^2.2.0",
+    "@types/react-select": "^2.0.17",
     "husky": "^2.2.0",
     "lint-staged": "^8.1.6",
     "prettier": "^1.17.0",
@@ -117,11 +141,11 @@
   },
   "scripts": {
     "tsc": "tsc --project . --noEmit",
-    "tslint": "tslint --fix --force --format stylish --project ./tsconfig.json ./{src,spec}/**/*.{ts,tsx}",
-    "prettier": "prettier --write ./{src,spec}/**/*.{ts,tsx}",
+    "tslint": "tslint --fix --force --format stylish --project \"./tsconfig.json\" \"./{src,spec}/**/*.{ts,tsx}\"",
+    "prettier": "prettier --write \"./{src,spec}/**/*.{ts,tsx}\"",
     "check": "npm run tslint && npm run prettier && npm run tsc",
     "check:lint-staged": "npm run tslint && npm run prettier && npm run tsc && echo Ignored patched files: ",
-    "check:config": "tslint-config-prettier-check ./tslint.json"
+    "check:config": "tslint-config-prettier-check \"./tslint.json\""
   },
   "prettier": {
     "semi": true,
