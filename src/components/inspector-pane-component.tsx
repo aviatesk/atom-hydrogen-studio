@@ -50,8 +50,8 @@ export default class HydrogenStudioInspectorPaneComponent extends React.Componen
     );
     const miniEditor = (
       <div
-        ref={component => {
-          this.container = component;
+        ref={element => {
+          this.container = element;
         }}
       />
     );
