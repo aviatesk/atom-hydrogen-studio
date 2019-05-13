@@ -4,19 +4,13 @@ import * as React from "react";
 import Select from "react-select";
 import { HydrogenStudioInspectorStore } from "../stores/inspector-store";
 import { HydrogenKernel } from "../typings/hydrogen.d";
-
-/**
- * Creates empty React component with a given message rendered in the center of pane
- */
-const makeEmptyComponent = (message: string, position: "absolute" | "relative" = "absolute") => {
-  return (
-    <ul className="background-message centered" style={{ position: position }}>
-      <li>{message}</li>
-    </ul>
-  );
-};
+import { makeEmptyComponent } from "./common-components";
 
 const displayOrder = ["text/html", "text/markdown", "text/plain"];
+
+const noRunningKernel = makeEmptyComponent("No running kernels");
+const notExecuted = makeEmptyComponent("No inspection exectuted yet", "relative");
+const notAvailable = makeEmptyComponent("No introspection available", "relative");
 
 interface Option {
   value: HydrogenKernel;
@@ -27,11 +21,18 @@ interface Option {
 export default class HydrogenStudioInspectorPaneComponent extends React.Component<{
   inspectorStore: HydrogenStudioInspectorStore;
 }> {
+  private container: HTMLElement | null | undefined;
+
+  public componentDidUpdate() {
+    if (!this.container) return;
+    this.container.insertBefore(this.props.inspectorStore.miniEditor.element, this.container.firstChild);
+  }
+
   public render() {
     const inspectorStore = this.props.inspectorStore;
     const { activeKernel, kernelBundleMap } = inspectorStore;
     if (!activeKernel) {
-      return makeEmptyComponent("No running kernels");
+      return noRunningKernel;
     }
 
     const options: Option[] = [];
@@ -47,13 +48,28 @@ export default class HydrogenStudioInspectorPaneComponent extends React.Componen
         onChange={this.handleChange}
       />
     );
+    const miniEditor = (
+      <div
+        ref={component => {
+          this.container = component;
+        }}
+      />
+    );
+    const header = (
+      <div className="header" style={{ display: "flex" }}>
+        <div className="inline-block selector">{selector}</div>
+        <div className="inline-block input-editor" style={{ minWidth: "300px", marginTop: "5px" }}>
+          {miniEditor}
+        </div>
+      </div>
+    );
 
     const bundle = kernelBundleMap.get(activeKernel);
     if (!bundle) {
       return (
         <div className="inspector-pane">
-          {selector}
-          {makeEmptyComponent("No inspection exectuted yet", "relative")}
+          {header}
+          {notExecuted}
         </div>
       );
     }
@@ -65,8 +81,8 @@ export default class HydrogenStudioInspectorPaneComponent extends React.Componen
       });
       return (
         <div className="inspector-pane">
-          {selector}
-          {makeEmptyComponent("No introspection available", "relative")}
+          {header}
+          {notAvailable}
         </div>
       );
     }
@@ -74,7 +90,7 @@ export default class HydrogenStudioInspectorPaneComponent extends React.Componen
     const Transform = transforms[mimetype];
     return (
       <div className="inspector-pane">
-        {selector}
+        {header}
         <Transform data={bundle[mimetype]} />
       </div>
     );

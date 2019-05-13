@@ -1,3 +1,4 @@
+import * as Atom from "atom";
 import { action, observable } from "mobx";
 import { Outputs } from "../typings/hydrogen";
 
@@ -17,6 +18,7 @@ export interface HydrogenStudioPlotData {
  *        becuase this automatically binds the method to this class object globally.
  */
 export class HydrogenStudioPlotStore {
+  public subscriptions: Atom.CompositeDisposable;
   @observable
   public activePlot: number;
   @observable
@@ -25,6 +27,15 @@ export class HydrogenStudioPlotStore {
   constructor() {
     this.plotsData = [];
     this.activePlot = -1;
+
+    // Add disposer
+    this.subscriptions = new Atom.CompositeDisposable();
+    this.subscriptions.add(
+      new Atom.Disposable(() => {
+        this.plotsData = [];
+        this.activePlot = 0;
+      })
+    );
   }
 
   public getActivePlotData(): null | HydrogenStudioPlotData {

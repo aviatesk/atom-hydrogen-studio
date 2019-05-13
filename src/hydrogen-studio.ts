@@ -4,6 +4,7 @@ import { plotPaneController } from "./controllers/plot-pane-controller";
 import HydrogenStudioInspectorKernelMiddleware from "./middlewares/inspector-middleware";
 import HydrogenStudioPlotKernelMiddleware from "./middlewares/plot-middleware";
 import { inspectorStore } from "./stores/inspector-store";
+import { plotStore } from "./stores/plot-store";
 import { Hydrogen, HydrogenKernel } from "./typings/hydrogen";
 
 class HydrogenStudio {
@@ -45,11 +46,9 @@ class HydrogenStudio {
     this.subscriptions.add(
       new Atom.Disposable(() => {
         plotPaneController.destroy();
-      })
-    );
-    this.subscriptions.add(
-      new Atom.Disposable(() => {
+        plotStore.subscriptions.dispose();
         inspectorPaneController.destroy();
+        inspectorStore.subscriptions.dispose();
       })
     );
   }
@@ -83,6 +82,34 @@ class HydrogenStudio {
   }
 
   public deactivate() {
+    if (this.kernelSet.size > 0) {
+      atom.notifications.addInfo("Hydrogen-Studio", {
+        description: `You have ${this.kernelSet.size} running kernels, do you want to shutdown them all ?`,
+        detail:
+          "If you keep the kernels running, they will continue to try to connect Hydrogen-Studio and it may cause " +
+          "some problem.",
+        dismissable: true,
+        buttons: [
+          {
+            text: "Shutdown",
+            onDidClick: () => {
+              this.kernelSet.forEach(kernel => {
+                /**
+                 * @note: `destroy` is not provided, so this may cause some error when Hydrogen gets updated
+                 */
+                (kernel as any).destroy();
+              });
+            },
+          },
+          {
+            text: "Not shutdown",
+            onDidClick: () => {
+              return;
+            },
+          },
+        ],
+      });
+    }
     this.subscriptions.dispose();
   }
 }

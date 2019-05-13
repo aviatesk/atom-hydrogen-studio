@@ -5,19 +5,7 @@ import * as React from "react";
 import Slider from "react-rangeslider";
 import { displayOrder, transforms } from "../common";
 import { HydrogenStudioPlotStore } from "../stores/plot-store";
-
-/**
- * Component class that is suppposed to be used when there is no plot
- */
-class EmptyMessage extends React.Component {
-  public render() {
-    return (
-      <ul className="background-message centered">
-        <li>No plot to display</li>
-      </ul>
-    );
-  }
-}
+import { makeEmptyComponent } from "./common-components";
 
 @observer
 export default class HydrogenStudioPlotPaneComponent extends React.Component<{ plotStore: HydrogenStudioPlotStore }> {
@@ -25,7 +13,7 @@ export default class HydrogenStudioPlotPaneComponent extends React.Component<{ p
     const plotStore = this.props.plotStore;
     const plotData = plotStore.getActivePlotData();
     if (!plotData) {
-      return <EmptyMessage />;
+      return makeEmptyComponent("No plot to display");
     }
 
     return (
