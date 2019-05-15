@@ -121,6 +121,12 @@ export abstract class HydrogenStudioPaneView {
 
   public abstract getTitle(): string;
 
+  /**
+   * Sets an icon that appeared in the tab for `this` view
+   * E.g.: `return "info";`
+   */
+  public abstract getIconName(): string;
+
   public abstract getURI(): string;
 
   public abstract serialize(): Serialized;

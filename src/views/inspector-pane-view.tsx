@@ -43,6 +43,10 @@ export class HydrogenStudioInspectorView extends HydrogenStudioPaneView {
     return HydrogenStudioInspectorView.URI;
   }
 
+  public getIconName() {
+    return "info";
+  }
+
   public serialize() {
     return {
       deserializer: "HydrogenStudioInspectorView",

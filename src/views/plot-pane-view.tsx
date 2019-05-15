@@ -68,6 +68,10 @@ export class HydrogenStudioPlotPaneView extends HydrogenStudioPaneView {
     return "Hydrogen Plot Area";
   }
 
+  public getIconName() {
+    return "graph";
+  }
+
   public getURI() {
     return HydrogenStudioPlotPaneView.URI;
   }
