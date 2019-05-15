@@ -8,10 +8,6 @@ import { makeEmptyComponent } from "./common-components";
 
 const displayOrder = ["text/html", "text/markdown", "text/plain"];
 
-const noRunningKernel = makeEmptyComponent("No running kernels");
-const notExecuted = makeEmptyComponent("No inspection exectuted yet", "relative");
-const notAvailable = makeEmptyComponent("No introspection available", "relative");
-
 interface Option {
   value: HydrogenKernel;
   label: string;
@@ -32,7 +28,7 @@ export default class HydrogenStudioInspectorPaneComponent extends React.Componen
     const inspectorStore = this.props.inspectorStore;
     const { activeKernel, kernelBundleMap } = inspectorStore;
     if (!activeKernel) {
-      return noRunningKernel;
+      return makeEmptyComponent("No running kernels");
     }
 
     const options: Option[] = [];
@@ -69,7 +65,7 @@ export default class HydrogenStudioInspectorPaneComponent extends React.Componen
       return (
         <div className="inspector-pane">
           {header}
-          {notExecuted}
+          {makeEmptyComponent("No inspection exectuted yet", "relative")}
         </div>
       );
     }
@@ -82,7 +78,7 @@ export default class HydrogenStudioInspectorPaneComponent extends React.Componen
       return (
         <div className="inspector-pane">
           {header}
-          {notAvailable}
+          {makeEmptyComponent("No introspection available", "relative")}
         </div>
       );
     }
