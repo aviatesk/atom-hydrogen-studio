@@ -14,8 +14,12 @@ This is a plugin for Atom package [Hydrogen](https://github.com/nteract/hydrogen
 - [x] **Inspector view**: Allows you to easily switch kernel and hold inspection results while editor switching
     * [x] Inspection input editor: Inspects code in a separate mini editor
 
+## TODOs
+
+- [ ] @TODO: Automatically focus inspector editor when opening inspector pane
+- [ ] @TODO: Tool-Bar integration
+
 ## Ideas
 
-- Tool bar integration
 - History view: Keeps history of input code
 - Workspace view

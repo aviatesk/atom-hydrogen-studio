@@ -14,7 +14,7 @@
   "repository": "https://github.com/aviatesk/atom-hydrogen-studio",
   "license": "MIT",
   "engines": {
-    "atom": ">=1.0.0 <2.0.0"
+    "atom": ">=1.28.0 <2.0.0"
   },
   "atomTranspilers": [
     {
