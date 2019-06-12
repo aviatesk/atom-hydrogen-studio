@@ -95,12 +95,7 @@
       "hydrogen:run-all",
       "hydrogen:run-all-above",
       "hydrogen:run-cell",
-      "hydrogen:run-cell-and-move-down",
-      "hydrogen:restart-kernel-and-re-evaluate-bubbles",
-      "hydrogen:toggle-bubble"
-    ],
-    "atom-workspace": [
-      "hydrogen:import-notebook"
+      "hydrogen:run-cell-and-move-down"
     ]
   },
   "deserializers": {
