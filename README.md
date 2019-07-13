@@ -10,14 +10,9 @@ This is a plugin for Atom package [Hydrogen](https://github.com/nteract/hydrogen
 
 ## Features
 
-- [x] **Plot view**: Displays plots in a separate view and keeps the history of them.
-- [x] **Inspector view**: Allows you to easily switch kernel and hold inspection results while editor switching
-    * [x] Inspection input editor: Inspects code in a separate mini editor
-
-## TODOs
-
-- [ ] @TODO: Automatically focus inspector editor when opening inspector pane
-- [ ] @TODO: Tool-Bar integration
+- **Plot view**: Displays plots in a separate view and keeps the history of them.
+- **Inspector view**: Allows you to easily switch kernel and hold inspection results while editor switching
+    * Inspection input editor: Inspects code in a separate mini editor
 
 ## Ideas
 
