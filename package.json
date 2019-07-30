@@ -107,7 +107,7 @@
     "@nteract/display-area": "^5.0.4-alpha.0",
     "@nteract/mathjax": "^4.0.0",
     "@nteract/transform-plotly": "^5.0.0",
-    "@nteract/transform-vega": "^5.0.2",
+    "@nteract/transform-vega": "^6.0.0",
     "@nteract/transforms": "^5.0.4-alpha.0",
     "atom-ts-transpiler": "^1.5.2",
     "mobx": "^5.9.4",
